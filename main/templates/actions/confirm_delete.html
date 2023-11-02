@@ -1,0 +1,38 @@
+{% extends "base_form.html" %}
+
+
+{% block content %}
+
+{% if reserva.id %}
+<h3 class="m-3 text-center">Excluir Reserva</h3>
+{% else %}
+<h3 class="m-3 text-center">Excluir Estande</h3>
+{%endif%}
+
+<div class="m-3 text-center">
+
+    <form method="post">
+        <section class="form container-fluid p-5x ">
+            {% csrf_token %}
+
+            
+            {% if reserva.id %}
+            <p> Você tem certeza que quer apagar esta reserva?</p>
+
+            <p>CPNJ: {{reserva.cnpj}}</p>
+            <p>Nome: {{reserva.nome_empresa}}</p>
+            {% else %}
+                
+            <p>Você tem certeza que quer apagar esse Estande?</p>
+
+            <p>Nome: {{stand.localizacao}}</p>
+            {%endif%}
+
+            {{ form }}
+        </section>
+
+        <button class="btn btn-danger " type="submit"> Confirmar</button>
+    </form>
+    <a href="/">Cancelar</a>
+</div>
+{% endblock %}

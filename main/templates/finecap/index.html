@@ -3,6 +3,8 @@
 {% block content %}
 <div class="container">
     <h1>Listagem de Reservas</h1>
+
+    <a href="{% url 'criar_reservas' %}" class="btn btn-primary mb-3">Adicionar Reserva</a>
     <table class="table table-bordered">
         <thead>
             <tr>
@@ -21,8 +23,8 @@
                     <td>{{ reserva.stand }}</td>
                     <td>{{ reserva.data_cadastro }}</td>
                     <td>
-                        <a href="" class="btn btn-primary btn-sm">Editar</a>
-                        <a href="" class="btn btn-danger btn-sm">Apagar</a>
+                        <a href="{% url 'editar_reservas' reserva.pk %}" class="btn btn-primary btn-sm">Editar</a>
+                        <a href="{% url 'deletar_reservas' reserva.pk %}" class="btn btn-danger btn-sm">Apagar</a>
                     </td>
                 </tr>
             {% endfor %}

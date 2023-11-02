@@ -18,11 +18,20 @@ from django.contrib import admin
 from django.urls import path, include
 from django.conf import settings
 from django.conf.urls.static import static
-from main.views import ListarReservasView
+from main.views import ListarReservasView, CriarReservasView, DeletarReservasView, EditarReservasView, ListarStandsView, CriarStandsView, DeletarStandsView, EditarStandsView
 
 urlpatterns = [
+    path('accounts/', include('allauth.urls')),
 
     path('admin/', admin.site.urls),
     path('', ListarReservasView.as_view(), name="listar_reservas"),
+    path('reserva/criar', CriarReservasView.as_view(), name="criar_reservas"),
+    path('reserva/editar/<int:pk>/', EditarReservasView.as_view(), name="editar_reservas"),
+    path('reserva/deletar/<int:pk>/', DeletarReservasView.as_view(), name="deletar_reservas"),
+
+    path('stand/', ListarStandsView.as_view(), name="listar_stands"),
+    path('stand/criar', CriarStandsView.as_view(), name="criar_stands"),
+    path('stand/editar/<int:pk>/', EditarStandsView.as_view(), name="editar_stands"),
+    path('stand/deletar/<int:pk>/', DeletarStandsView.as_view(), name="deletar_stands"),
 
 ]+static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

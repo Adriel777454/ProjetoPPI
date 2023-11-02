@@ -1,0 +1,30 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container">
+    <h1>Lista de Stands</h1>
+
+    <a href="{% url 'criar_stands' %}" class="btn btn-primary mb-3">Adicionar Stand</a>
+    <table class="table table-bordered">
+        <thead>
+            <tr>
+                <th>Localização</th>
+                <th>Valor</th>
+                <th>Ações</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for stand in stands %}
+                <tr>
+                    <td>{{ stand.localizacao }}</td>
+                    <td>{{ stand.valor }}</td>
+                    <td>
+                        <a href="{% url 'editar_stands' stand.pk %}" class="btn btn-primary btn-sm">Editar</a>
+                        <a href="{% url 'deletar_stands' stand.pk %}" class="btn btn-danger btn-sm">Apagar</a>
+                    </td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endblock %}

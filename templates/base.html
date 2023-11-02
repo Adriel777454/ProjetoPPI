@@ -1,47 +1,76 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>{% block title %}Reservas FINECAP{% endblock %}</title>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>
+      {% block title %}
+        Reservas FINECAP
+      {% endblock %}
+    </title>
     <!-- Adicione o link para o Bootstrap CSS -->
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" />
     <!-- Adicione aqui seus links para folhas de estilo CSS personalizadas, se necessário -->
-</head>
-<body>
+  </head>
+  <body>
     <header>
-        <!-- Cabeçalho Bootstrap simples -->
-        <nav class="navbar navbar-expand-lg navbar-light bg-light">
-            <div class="container">
-                <a class="navbar-brand" href="#">Reservas FINECAP</a>
-                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-                    <span class="navbar-toggler-icon"></span>
-                </button>
-                <div class="collapse navbar-collapse" id="navbarNav">
-                    <ul class="navbar-nav ml-auto">
-                        <!-- Adicione seus links de navegação aqui -->
-                    </ul>
-                </div>
-            </div>
-        </nav>
+      <!-- Cabeçalho Bootstrap simples -->
+      <nav class="navbar navbar-expand-lg navbar-light bg-light">
+        <div class="container">
+          <a class="navbar-brand" href="#">Reservas FINECAP</a>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation"><span class="navbar-toggler-icon"></span></button>
+          <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav ml-auto">
+              <!-- Verificar se o usuário está logado e mostrar o nome e o botão de logout -->
+              {% if user.is_authenticated %}
+                <li class="nav-item">
+                  <span class="navbar-text">Bem-vindo, {{ user.username }}</span>
+                </li>
+                <li class="nav-item">
+                  <a href="{% url 'account_logout' %}" class="nav-link">Logout</a>
+                </li>
+              {% else %}
+                <li class="nav-item">
+                  <a href="{% url 'account_login' %}" class="nav-link">Login</a>
+                </li>
+              {% endif %}
+            </ul>
+          </div>
+        </div>
+      </nav>
     </header>
 
     <main class="container mt-4">
-        <!-- Bloco central onde os conteúdos das páginas específicas serão inseridos -->
-        {% block content %}
-        {% endblock %}
+      <!-- Adicione abas para duas páginas -->
+      {% if user.is_authenticated %}
+        <ul class="nav nav-tabs">
+            <li class="nav-item">
+              <a class="nav-link" href="{% url 'listar_reservas' %}">Reservas</a>
+            </li>
+            {% if user.is_superuser  %}
+            <li class="nav-item">
+              <a class="nav-link" href="{% url 'listar_stands' %}">Stands</a>
+            </li>
+            {% endif %}
+        </ul>
+      {% endif %}
+
+      <!-- Bloco central onde os conteúdos das páginas específicas serão inseridos -->
+      {% block content %}
+
+      {% endblock %}
     </main>
 
     <footer class="mt-4">
-        <!-- Rodapé Bootstrap simples -->
-        <div class="container">
-            <p>&copy; Adriel</p>
-        </div>
+      <!-- Rodapé Bootstrap simples -->
+      <div class="container">
+        <p>&copy; Adriel</p>
+      </div>
     </footer>
 
     <!-- Adicione o link para o Bootstrap JavaScript (popper.js e jQuery são necessários) -->
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <!-- Adicione seus scripts personalizados aqui, se necessário -->
-</body>
+  </body>
 </html>
