@@ -1,0 +1,32 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container">
+    <h1>Listagem de Reservas</h1>
+    <table class="table table-bordered">
+        <thead>
+            <tr>
+                <th>CNPJ</th>
+                <th>Nome da Empresa</th>
+                <th>Stand</th>
+                <th>Data de Cadastro</th>
+                <th>Ações</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for reserva in reservas %}
+                <tr>
+                    <td>{{ reserva.cnpj }}</td>
+                    <td>{{ reserva.nome_empresa }}</td>
+                    <td>{{ reserva.stand }}</td>
+                    <td>{{ reserva.data_cadastro }}</td>
+                    <td>
+                        <a href="" class="btn btn-primary btn-sm">Editar</a>
+                        <a href="" class="btn btn-danger btn-sm">Apagar</a>
+                    </td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endblock %}
