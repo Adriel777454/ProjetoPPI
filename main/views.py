@@ -10,7 +10,7 @@ class ListarReservasView(LoginRequiredMixin,ListView):
     model = Reserva
     template_name = "finecap/index.html"
     context_object_name = "reservas"
-    paginate_by = 3
+    paginate_by = 5
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
