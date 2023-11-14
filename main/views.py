@@ -11,6 +11,7 @@ class ListarReservasView(LoginRequiredMixin,ListView):
     template_name = "finecap/index.html"
     context_object_name = "reservas"
     paginate_by = 3
+    ordering = ["data_cadastro"]
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
