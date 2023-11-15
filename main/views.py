@@ -1,22 +1,72 @@
 from django.shortcuts import render,get_object_or_404,redirect
 from django.views.generic import ListView, CreateView, UpdateView, DeleteView
 from django.urls import reverse_lazy
+from django.http import HttpResponse
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from .models import *
 from .forms import *
 from datetime import datetime
+from django.db.models import Q
 
 class ListarReservasView(LoginRequiredMixin,ListView):
+
     model = Reserva
     template_name = "finecap/index.html"
     context_object_name = "reservas"
     paginate_by = 3
     ordering = ["data_cadastro"]
+    
+    def get_queryset(self):
+        search_query = self.request.GET.get('search', '')
 
+        if search_query:
+            queryset = Reserva.objects.filter(nome_empresa__icontains=search_query)
+        else:
+            queryset = Reserva.objects.all()
+
+        return queryset
+
+
+    def get_queryset(self):
+        filter_stand = self.request.GET.get('stand_filter', '')
+        filter_quitado = self.request.GET.get('quitado_filter', '')
+
+        queryset = Reserva.objects.all()
+
+        # Use Q objects to combine filters
+        filter_conditions = Q()
+
+        if filter_quitado == "1":
+            filter_conditions &= Q(quitado=True)
+        if filter_quitado == "2":
+            filter_conditions &= Q(quitado=False)
+
+        stand_filters = {
+            "1": "Front",
+            "2": "Back",
+            "3": "Left",
+            "4": "Right",
+        }
+
+        if filter_stand in stand_filters:
+            filter_conditions &= Q(stand__localizacao=stand_filters[filter_stand])
+
+        # Apply the combined filter conditions to the queryset
+
+        if filter_conditions:
+            queryset = queryset.filter(filter_conditions)
+        else:
+            queryset = Reserva.objects.all()
+
+        return queryset
+    
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context['total_reservas'] = Reserva.objects.count()
-        context['total_stands'] = Stand.objects.count()
+        search_query = self.request.GET.get('search', '')
+
+        # Adicione a search_query ao contexto para preencher automaticamente o campo de pesquisa
+        context['search_query'] = search_query
+
         return context
 
 class CriarReservasView(LoginRequiredMixin,CreateView):

@@ -1,52 +1,88 @@
 {% extends 'base.html' %}
 
 {% block content %}
-<div class="container">
+
+  <div class="container">
     <h1>Listagem de Reservas</h1>
 
     <a href="{% url 'criar_reservas' %}" class="btn btn-primary mb-3">Adicionar Reserva</a>
+
+      <form class="input-group mb-3" method="GET" action="{% url 'listar_reservas' %}">
+        <input type="text" class="form-control" placeholder="Pesquisar..." aria-label="Pesquisar..." aria-describedby="basic-addon2" name="search" value="{{ search_query }}" />
+        <div class="input-group-append">
+          <button class="btn btn-primary" type="submit" id="search-btn">Pesquisar</button>
+        </div>
+      </form>
+
+      <form class="input-group mb-3 method="GET" action="{% url 'listar_reservas' %}">
+
+        <div class="input-group-prepend">
+            <label class="input-group-text" for="inputGroupSelect01">Quitados</label>
+          </div>
+          <select class="custom-select" id="inputGroupSelect01" name="quitado_filter">
+            <option name="stand_filter" selected>...</option>
+            <option value="1">Sim</option>
+            <option value="2">Não</option>
+
+          </select>
+
+        <div class="input-group-prepend">
+          <label class="input-group-text" for="inputGroupSelect01">Filtrar por</label>
+        </div>
+        <select class="custom-select" id="inputGroupSelect01" name="stand_filter">
+          <option name="stand_filter" selected>...</option>
+          <option value="1">Front</option>
+          <option value="2">Back</option>
+          <option value="3">Left</option>
+          <option value="4">Right</option>
+        </select>
+        <div class="input-group-append">
+            <button class="btn btn-primary" type="submit" id="search-btn">Filtrar</button>
+          </div>
+      </form>
+
     <table class="table table-bordered">
-        <thead>
-            <tr>
-                <th>CNPJ</th>
-                <th>Nome da Empresa</th>
-                <th>Stand</th>
-                <th>Data de Cadastro</th>
-                <th>Ações</th>
-            </tr>
-        </thead>
-        <tbody>
-            {% for reserva in reservas %}
-                <tr>
-                    <td>{{ reserva.cnpj }}</td>
-                    <td>{{ reserva.nome_empresa }}</td>
-                    <td>{{ reserva.stand }}</td>
-                    <td>{{ reserva.data_cadastro }}</td>
-                    <td>
-                        <a href="{% url 'editar_reservas' reserva.pk %}" class="btn btn-primary btn-sm">Editar</a>
-                        <a href="{% url 'deletar_reservas' reserva.pk %}" class="btn btn-danger btn-sm">Apagar</a>
-                    </td>
-                </tr>
-            {% endfor %}
-        </tbody>
+      <thead>
+        <tr>
+          <th>CNPJ</th>
+          <th>Nome da Empresa</th>
+          <th>Stand</th>
+          <th>Data de Cadastro</th>
+          <th>Ações</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for reserva in reservas %}
+          <tr>
+            <td>{{ reserva.cnpj }}</td>
+            <td>{{ reserva.nome_empresa }}</td>
+            <td>{{ reserva.stand }}</td>
+            <td>{{ reserva.data_cadastro }}</td>
+            <td>
+              <a href="{% url 'editar_reservas' reserva.pk %}" class="btn btn-primary btn-sm">Editar</a>
+              <a href="{% url 'deletar_reservas' reserva.pk %}" class="btn btn-danger btn-sm">Apagar</a>
+            </td>
+          </tr>
+        {% endfor %}
+      </tbody>
     </table>
 
     <div class="row">
-        <div class="col">
-            {% if page_obj.has_previous %}
-                <a href="?page=1" class="btn btn-primary">&laquo; Primeira</a>
-                <a href="?page={{ page_obj.previous_page_number }}" class="btn btn-primary">Anterior</a>
-            {% endif %}
-        </div>
-        <div class="col text-center">
-            <span class="current-page">Página {{ page_obj.number }} de {{ page_obj.paginator.num_pages }}.</span>
-        </div>
-        <div class="col text-right">
-            {% if page_obj.has_next %}
-                <a href="?page={{ page_obj.next_page_number }}" class="btn btn-primary">Próxima</a>
-                <a href="?page={{ page_obj.paginator.num_pages }}" class="btn btn-primary">Última &raquo;</a>
-            {% endif %}
-        </div>
+      <div class="col">
+        {% if page_obj.has_previous %}
+          <a href="?page=1" class="btn btn-primary">&laquo; Primeira</a>
+          <a href="?page={{ page_obj.previous_page_number }}" class="btn btn-primary">Anterior</a>
+        {% endif %}
+      </div>
+      <div class="col text-center">
+        <span class="current-page">Página {{ page_obj.number }} de {{ page_obj.paginator.num_pages }}.</span>
+      </div>
+      <div class="col text-right">
+        {% if page_obj.has_next %}
+          <a href="?page={{ page_obj.next_page_number }}" class="btn btn-primary">Próxima</a>
+          <a href="?page={{ page_obj.paginator.num_pages }}" class="btn btn-primary">Última &raquo;</a>
+        {% endif %}
+      </div>
     </div>
-</div>
+  </div>
 {% endblock %}
